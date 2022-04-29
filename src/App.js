@@ -14,8 +14,6 @@ function App() {
   const [myRecipies, setMyRecipies] = useState([])
   const [wordSubmitted, serWordSubmitted] = useState('')
   const [myFiltred, setMyFiltred] = useState([])
-  console.log(myRecipies)
-  console.log(myFiltred)
 
   useEffect( () => {
     async function fetchData() {
