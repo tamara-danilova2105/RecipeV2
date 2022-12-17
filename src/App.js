@@ -1,19 +1,19 @@
 import './App.css';
-import { useEffect, useState } from 'react'
-import video from './food.mp4'
-import icon from './751463.png'
+import { useEffect, useState } from 'react';
+import video from './food.mp4';
+import icon from './751463.png';
 import RecipiesComponent from './RecipiesComponent';
 import Button from './Button';
 
 function App() {
+  
+  const MY_ID = process.env.REACT_APP_ID;
+  const MY_KEY = process.env.REACT_APP_KEY;
 
-  const MY_ID = '5ff670c9'
-  const MY_KEY = '8c28f0555c9644bfae5598e5f086ee39'
-
-  const [mySearch, setMySearch] = useState('')
-  const [myRecipies, setMyRecipies] = useState([])
-  const [wordSubmitted, serWordSubmitted] = useState('')
-  const [myFiltred, setMyFiltred] = useState([])
+  const [mySearch, setMySearch] = useState('');
+  const [myRecipies, setMyRecipies] = useState([]);
+  const [wordSubmitted, setWordSubmitted] = useState('');
+  const [myFiltred, setMyFiltred] = useState([]);
 
   useEffect( () => {
     async function fetchData() {
@@ -23,20 +23,20 @@ function App() {
       setMyFiltred(data.hits)
     }
     fetchData()
-  },[wordSubmitted])
+  },[wordSubmitted, MY_ID, MY_KEY])
 
   const RecipeSearch = (e) => {
     setMySearch(e.target.value)
   }
 
   const finalSearch = (e) => {
-    e.preventDefault()
-    serWordSubmitted(mySearch)
+    e.preventDefault();
+    setWordSubmitted(mySearch);
   }
 
   const ChosenMeals = (dishType) => {
-    const newMeals = myRecipies.filter(item => item.recipe.dishType[0] === dishType)
-    setMyFiltred(newMeals)
+    const newMeals = myRecipies.filter(item => item.recipe.dishType[0] === dishType);
+    setMyFiltred(newMeals);
   }
 
   return (
@@ -50,9 +50,14 @@ function App() {
 
       <div className="container">
         <form onSubmit={finalSearch}>
-          <input className='search' placeholder='ingredient...' onChange={RecipeSearch} value={mySearch}></input>
+          <input 
+            className='search' 
+            placeholder='ingredient...' 
+            onChange={RecipeSearch} value={mySearch} />
         </form>
-          <button onClick={finalSearch}>
+          <button 
+            type='submit'
+          >
             <img src={icon} width='35px' alt='button search' />
           </button>
       </div>
@@ -63,11 +68,12 @@ function App() {
 
       <div className='container-recipies'>
         {myFiltred.map((item, index) => (
-          <RecipiesComponent key={index}
-          label={item.recipe.label} 
-          image={item.recipe.image} 
-          calories={item.recipe.calories}
-          ingredients={item.recipe.ingredientLines}
+          <RecipiesComponent 
+            key={index}
+            label={item.recipe.label} 
+            image={item.recipe.image} 
+            calories={item.recipe.calories}
+            ingredients={item.recipe.ingredientLines}
           />
         ))}
       </div>
